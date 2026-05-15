@@ -2,342 +2,191 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Árbol de decisión | RRSS y digitalización</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RRSS y su importancia en la digitalización | Keynote</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
   <style>
     :root {
-      --bg: #fbfbfd;
-      --black: #101014;
-      --dark: #1f2430;
-      --gray: #576078;
+      --white: #ffffff;
+      --ink: #0c0d12;
+      --gray: #656b7c;
       --pink: #f50185;
       --orange: #ff6a00;
       --coral: #ff4f65;
-      --card: rgba(255,255,255,.84);
-      --shadow: 0 30px 80px rgba(28, 23, 40, .13);
-      --radius: 28px;
+      --glow: 0 0 90px rgba(255, 106, 0, 0.35);
     }
 
-    * { box-sizing: border-box; }
+    html, body, .reveal, .slides { height: 100%; }
     body {
       margin: 0;
-      min-height: 100vh;
-      font-family: 'Poppins', system-ui, sans-serif;
       background:
-        radial-gradient(circle at 15% 20%, rgba(255,106,0,.16), transparent 36%),
-        radial-gradient(circle at 85% 80%, rgba(245,1,133,.11), transparent 34%),
-        linear-gradient(135deg, #ffffff 0%, #f8f9ff 45%, #fff8f4 100%);
-      color: var(--black);
-      display: grid;
-      place-items: center;
+        radial-gradient(circle at 15% 18%, rgba(255,106,0,.18), transparent 35%),
+        radial-gradient(circle at 82% 78%, rgba(245,1,133,.14), transparent 34%),
+        linear-gradient(132deg, #fff 0%, #f8f9ff 50%, #fff9f5 100%);
+      font-family: 'Poppins', system-ui, sans-serif;
+      color: var(--ink);
       overflow: hidden;
     }
 
     body::before {
       content: "";
       position: fixed;
-      inset: -20%;
-      background: repeating-linear-gradient(
-        -30deg,
-        transparent 0 72px,
-        rgba(16,16,20,.03) 72px 74px
-      );
+      inset: -15%;
       pointer-events: none;
+      background: repeating-linear-gradient(-32deg, transparent 0 88px, rgba(12,13,18,.035) 88px 90px);
     }
 
-    .app {
-      width: min(1500px, 95vw);
-      min-height: 85vh;
-      padding: clamp(24px, 3vw, 56px);
-      position: relative;
-      isolation: isolate;
-    }
-
-    .panel {
-      position: absolute;
-      inset: clamp(12px, 2vw, 24px);
-      background: var(--card);
-      border: 1px solid rgba(255,255,255,.9);
-      border-radius: 42px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-      padding: clamp(30px, 4vw, 70px);
-      display: grid;
-      align-content: center;
-      gap: clamp(26px, 3vw, 48px);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(70px) scale(.985);
-      transition: opacity .55s ease, transform .65s cubic-bezier(.22,.74,.29,1);
-    }
-
-    .panel.active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(0) scale(1);
-    }
-
-    .kicker {
-      margin: 0;
-      font-size: clamp(1rem, 1.35vw, 1.35rem);
-      color: var(--gray);
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    h1, h2 {
-      margin: 0;
-      font-size: clamp(2rem, 4.3vw, 5rem);
-      line-height: 1.08;
-      max-width: 18ch;
-      font-weight: 800;
-      letter-spacing: -.02em;
-    }
-
-    .sub {
-      margin: 0;
-      font-size: clamp(1.15rem, 1.8vw, 2rem);
-      color: var(--dark);
-      max-width: 46ch;
-      line-height: 1.5;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(280px, 1fr));
-      gap: clamp(16px, 1.8vw, 26px);
-    }
-
-    .btn, .option {
-      border: none;
-      border-radius: var(--radius);
-      font-family: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform .2s ease, box-shadow .3s ease, background .25s ease;
-    }
-
-    .btn {
-      font-size: clamp(1.2rem, 1.8vw, 1.7rem);
-      padding: clamp(18px, 2.2vw, 28px) clamp(26px, 2.8vw, 40px);
-      width: fit-content;
-      color: #fff;
-      background: linear-gradient(120deg, var(--pink), var(--coral), var(--orange));
-      box-shadow: 0 20px 45px rgba(245,1,133,.35);
-    }
-
-    .option {
+    .reveal { font-family: 'Poppins', system-ui, sans-serif; }
+    .slides section {
       text-align: left;
-      font-size: clamp(1.2rem, 1.6vw, 1.65rem);
-      color: var(--black);
-      padding: clamp(20px, 2.2vw, 30px);
-      min-height: clamp(95px, 13vh, 150px);
-      background: #fff;
-      border: 1px solid rgba(18,18,22,.08);
-      box-shadow: 0 12px 26px rgba(16,16,20,.08);
+      padding: 4vh 6vw;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2.5vh;
+      height: 100%;
     }
 
-    .option:hover, .btn:hover { transform: translateY(-3px); }
-    .option:active, .btn:active { transform: translateY(0); }
+    .kicker { font-size: 1.25rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gray); font-weight: 700; }
+    .title-xl { font-size: clamp(3rem, 7vw, 8.2rem); line-height: .98; font-weight: 800; letter-spacing: -.03em; max-width: 14ch; margin: 0; }
+    .title-lg { font-size: clamp(2.8rem, 6vw, 7rem); line-height: 1.03; font-weight: 800; margin: 0; max-width: 15ch; }
+    .subtitle { font-size: clamp(1.2rem, 2.1vw, 2.25rem); color: #272b37; max-width: 40ch; margin: 0; }
 
-    .option:hover {
-      box-shadow: 0 16px 32px rgba(245,1,133,.18);
-      border-color: rgba(245,1,133,.28);
-      background: linear-gradient(135deg, #fff, #fff8fc);
-    }
+    .accent { background: linear-gradient(100deg, var(--pink), var(--coral), var(--orange)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .badge { display: inline-block; padding: .7rem 1.3rem; border-radius: 999px; color: #fff; font-size: 1rem; font-weight: 700; background: linear-gradient(120deg, var(--pink), var(--orange)); box-shadow: var(--glow); }
 
-    .result-wrap {
-      display: grid;
-      gap: clamp(12px, 1.6vw, 24px);
-      grid-template-columns: 180px 1fr;
-      align-items: start;
-    }
+    .stat { font-size: clamp(5rem, 15vw, 16rem); line-height: .9; font-weight: 800; color: var(--ink); margin: 0; text-shadow: var(--glow); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; align-items: stretch; }
+    .card { background: rgba(255,255,255,.84); border: 1px solid rgba(255,255,255,.95); border-radius: 34px; padding: 2rem; box-shadow: 0 24px 60px rgba(18,19,26,.12); }
+    .card h3 { margin: 0 0 1rem; font-size: clamp(1.8rem, 2.5vw, 2.8rem); }
+    .card p { margin: 0; font-size: clamp(1.1rem, 1.6vw, 1.7rem); color: #1f2430; }
 
-    .logo {
-      width: clamp(140px, 12vw, 180px);
-      aspect-ratio: 1;
-      border-radius: 36px;
-      display: grid;
-      place-items: center;
-      font-size: clamp(3rem, 4vw, 4.6rem);
-      background: linear-gradient(145deg, rgba(245,1,133,.12), rgba(255,106,0,.16));
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.8), 0 20px 42px rgba(245,1,133,.2);
-    }
+    .quote { font-size: clamp(2.4rem, 4.8vw, 5.8rem); line-height: 1.08; font-weight: 800; max-width: 17ch; margin: 0; }
 
-    .result-card {
-      background: #fff;
-      border-radius: 30px;
-      padding: clamp(18px, 2vw, 30px);
-      border: 1px solid rgba(16,16,20,.08);
-      box-shadow: 0 12px 24px rgba(16,16,20,.06);
+    .qr-wrap { display: flex; align-items: center; gap: 3vw; }
+    .qr {
+      width: min(36vh, 390px); aspect-ratio: 1; border-radius: 24px; padding: 16px;
+      background: #fff; box-shadow: 0 20px 45px rgba(0,0,0,.15), var(--glow);
     }
+    .qr img { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
 
-    .result-card p {
-      margin: 0 0 14px;
-      font-size: clamp(1.02rem, 1.3vw, 1.35rem);
-      line-height: 1.55;
-      color: var(--dark);
-    }
+    .framework-step { display: flex; gap: 1rem; align-items: center; font-size: clamp(1.5rem, 2.7vw, 3rem); font-weight: 700; }
+    .dot { width: 1rem; height: 1rem; border-radius: 50%; background: linear-gradient(120deg, var(--pink), var(--orange)); box-shadow: var(--glow); flex: 0 0 auto; }
 
-    .result-card strong {
-      color: var(--black);
-      font-weight: 700;
-    }
+    .compare { font-size: clamp(1.5rem, 2.2vw, 2.4rem); }
+    .compare strong { font-size: clamp(2.2rem, 3.2vw, 3.4rem); display: block; margin-bottom: .6rem; }
 
-    @media (max-width: 1024px) {
-      .grid { grid-template-columns: 1fr; }
-      .result-wrap { grid-template-columns: 1fr; }
-    }
+    .cta { display: inline-flex; align-items: center; justify-content: center; min-width: 360px; min-height: 96px; border-radius: 24px; background: var(--ink); color: #fff; font-size: 2rem; font-weight: 700; text-decoration: none; }
   </style>
 </head>
 <body>
-  <main class="app" aria-live="polite">
-    <section class="panel active" data-step="start">
-      <p class="kicker">Taller · RRSS y su importancia en la digitalización</p>
-      <h1>¿Qué canal digital debería priorizar tu negocio?</h1>
-      <p class="sub">Responde 3 preguntas y descubre dónde tiene más sentido enfocar tu presencia digital.</p>
-      <button class="btn" id="startBtn">Empezar</button>
-    </section>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <span class="badge">Taller presencial · Horizonte 27</span>
+        <h1 class="title-xl">RRSS y su importancia en la <span class="accent">digitalización</span></h1>
+        <p class="subtitle">Vanessa Cid · @soyvanessacid</p>
+      </section>
 
-    <section class="panel" data-step="q1">
-      <p class="kicker">Pregunta 1 de 3</p>
-      <h2>¿Tu cliente principal es…?</h2>
-      <div class="grid">
-        <button class="option" data-q="audience" data-value="b2c">Cliente final / consumidor</button>
-        <button class="option" data-q="audience" data-value="b2b">Empresa / profesional</button>
-        <button class="option" data-q="audience" data-value="both">Ambos</button>
-      </div>
-    </section>
+      <section>
+        <p class="kicker">Mantra</p>
+        <h2 class="title-lg">Hoy la percepción digital también es negocio.</h2>
+      </section>
 
-    <section class="panel" data-step="q2">
-      <p class="kicker">Pregunta 2 de 3</p>
-      <h2>¿Qué necesitas conseguir ahora?</h2>
-      <div class="grid">
-        <button class="option" data-q="goal" data-value="visibility">Más visibilidad</button>
-        <button class="option" data-q="goal" data-value="trust">Más confianza</button>
-        <button class="option" data-q="goal" data-value="sales">Más contactos o ventas</button>
-        <button class="option" data-q="goal" data-value="support">Mejor atención/comunicación</button>
-      </div>
-    </section>
+      <section>
+        <p class="kicker">Dato clave</p>
+        <p class="stat">86%</p>
+        <p class="subtitle">usan redes sociales diariamente.</p>
+      </section>
 
-    <section class="panel" data-step="q3">
-      <p class="kicker">Pregunta 3 de 3</p>
-      <h2>¿Qué tipo de contenido puedes sostener mejor?</h2>
-      <div class="grid">
-        <button class="option" data-q="content" data-value="short">Videos cortos</button>
-        <button class="option" data-q="content" data-value="educational">Contenido educativo</button>
-        <button class="option" data-q="content" data-value="authority">Casos, testimonios o autoridad</button>
-        <button class="option" data-q="content" data-value="chat">Atención directa y conversación</button>
-      </div>
-    </section>
+      <section>
+        <p class="kicker">Caso real</p>
+        <div class="grid-2">
+          <article class="card">
+            <h3>Conocen 8. Usan 5.</h3>
+            <p>Equipo comercial excelente, presencia digital fragmentada y sin narrativa estratégica.</p>
+          </article>
+          <article class="card">
+            <h3>Resultado</h3>
+            <p>Tras ordenar su ecosistema de RRSS, aumentaron claridad de oferta y calidad de leads.</p>
+          </article>
+        </div>
+      </section>
 
-    <section class="panel" data-step="result">
-      <p class="kicker">Recomendación principal</p>
-      <h2 id="resultTitle"></h2>
-      <div class="result-wrap">
-        <div class="logo" id="resultLogo" aria-hidden="true"></div>
-        <article class="result-card">
-          <p><strong>Por qué tiene sentido:</strong> <span id="resultWhy"></span></p>
-          <p><strong>Contenido recomendado:</strong> <span id="resultContent"></span></p>
-          <p><strong>Primer paso esta semana:</strong> <span id="resultStep"></span></p>
-        </article>
-      </div>
-      <button class="btn" id="restartBtn">Volver a empezar</button>
-    </section>
-  </main>
+      <section>
+        <p class="quote">La digitalización no es abrir perfiles.</p>
+      </section>
 
+      <section>
+        <p class="kicker">Interacción en sala</p>
+        <div class="qr-wrap">
+          <div class="qr">
+            <img alt="QR para auditoría digital" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https%3A%2F%2Fexample.com%2Fauditoria-digital">
+          </div>
+          <div>
+            <h2 class="title-lg">Escanea y evalúa tu presencia digital en 2 minutos.</h2>
+            <p class="subtitle">Diagnóstico rápido para pasar de intuición a estrategia.</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="kicker">Framework</p>
+        <h2 class="title-lg">Presencia → Percepción → Conversión</h2>
+        <div class="framework-step"><span class="dot"></span>Presencia: ser visible donde decide tu cliente.</div>
+        <div class="framework-step"><span class="dot"></span>Percepción: proyectar valor y confianza.</div>
+        <div class="framework-step"><span class="dot"></span>Conversión: activar negocio con intención.</div>
+      </section>
+
+      <section>
+        <p class="kicker">Comparativa</p>
+        <div class="grid-2">
+          <article class="card compare">
+            <strong>Solo publicar</strong>
+            Actividad sin dirección, métricas vanidosas y mensajes dispersos.
+          </article>
+          <article class="card compare">
+            <strong>Estrategia digital</strong>
+            Posicionamiento claro, contenidos con propósito y resultados de negocio.
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <p class="kicker">Auditoría express</p>
+        <h2 class="title-lg">Muchos negocios sí son buenos. Digitalmente solo no lo parecen.</h2>
+        <p class="subtitle">Checklist: perfil, propuesta, consistencia visual, prueba social y CTA.</p>
+      </section>
+
+      <section>
+        <p class="kicker">Cierre</p>
+        <h2 class="title-lg">Tu marca ya comunica. Decide si comunica <span class="accent">estrategia</span>.</h2>
+        <a class="cta" href="#">@soyvanessacid</a>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
   <script>
-    const panels = [...document.querySelectorAll('.panel')];
-    const answers = { audience: null, goal: null, content: null };
-
-    const rules = [
-      { when: a => a.goal === 'support' || a.content === 'chat', result: 'whatsapp' },
-      { when: a => a.audience === 'b2b' && (a.goal === 'trust' || a.content === 'authority'), result: 'linkedin' },
-      { when: a => a.audience === 'b2c' && a.content === 'short', result: 'tiktok' },
-      { when: a => a.goal === 'visibility' && a.content === 'short', result: 'instagram' },
-      { when: a => a.content === 'educational' && (a.goal === 'trust' || a.goal === 'visibility'), result: 'youtube' },
-      { when: a => a.goal === 'sales' && (a.audience === 'b2c' || a.audience === 'both'), result: 'google' },
-      { when: a => a.audience === 'both' && a.goal === 'trust', result: 'web' },
-      { when: _ => true, result: 'instagram' }
-    ];
-
-    const channels = {
-      instagram: {
-        name: 'Instagram', logo: '📸',
-        why: 'Combina alcance, cercanía y prueba social en un mismo canal visual ideal para marca personal o comercial.',
-        content: 'Reels de valor, carruseles con tips aplicables, historias diarias con encuestas y backstage.',
-        step: 'Publica 3 Reels esta semana con un mismo tema y un CTA directo a mensaje o WhatsApp.'
-      },
-      tiktok: {
-        name: 'TikTok', logo: '🎵',
-        why: 'Hoy es uno de los canales más potentes para descubrimiento rápido y alcance orgánico con creatividad.',
-        content: 'Videos cortos con gancho en 2 segundos, comparativas, errores comunes y tendencias adaptadas al negocio.',
-        step: 'Graba 5 clips cortos en bloque y programa 1 diario para validar formatos con más retención.'
-      },
-      linkedin: {
-        name: 'LinkedIn', logo: '💼',
-        why: 'Para entorno B2B acelera autoridad, confianza y generación de oportunidades profesionales de calidad.',
-        content: 'Post de opinión experta, casos de éxito, aprendizajes reales, documentos tipo carrusel y video breve.',
-        step: 'Publica un caso práctico con resultado concreto y cierra con pregunta para abrir conversación.'
-      },
-      youtube: {
-        name: 'YouTube', logo: '▶️',
-        why: 'Es excelente para educar en profundidad, construir confianza sostenida y posicionar marca en búsquedas.',
-        content: 'Tutoriales claros, guías paso a paso, respuestas a preguntas frecuentes y clips destacados reutilizables.',
-        step: 'Define 3 preguntas frecuentes de tu cliente y graba una mini serie de 3 videos útiles.'
-      },
-      google: {
-        name: 'Google Business Profile', logo: '📍',
-        why: 'Cuando la intención de compra ya existe, aparecer en búsquedas locales puede generar contactos directos rápidos.',
-        content: 'Actualizaciones semanales, fotos reales, ofertas puntuales, respuestas a reseñas y FAQs locales.',
-        step: 'Optimiza ficha de negocio (categoría, horario, servicios) y solicita 5 reseñas a clientes satisfechos.'
-      },
-      whatsapp: {
-        name: 'WhatsApp Business', logo: '💬',
-        why: 'Facilita comunicación inmediata, seguimiento comercial y atención cercana con muy baja fricción.',
-        content: 'Mensajes de bienvenida, respuestas rápidas, catálogo actualizado y listas de difusión segmentadas.',
-        step: 'Configura perfil, mensaje automático y 6 respuestas rápidas para dudas repetidas esta misma semana.'
-      },
-      web: {
-        name: 'Web / Landing', logo: '🧭',
-        why: 'Centraliza propuesta de valor, credibilidad y conversión con control total del mensaje y de los datos.',
-        content: 'Página clara con propuesta, beneficios, casos, prueba social, FAQ y CTA principal visible.',
-        step: 'Crea o ajusta una landing de una sola oferta con formulario corto y métrica de conversión.'
-      }
-    };
-
-    const go = step => {
-      panels.forEach(p => p.classList.toggle('active', p.dataset.step === step));
-    };
-
-    const computeResult = () => rules.find(r => r.when(answers)).result;
-
-    document.getElementById('startBtn').addEventListener('click', () => go('q1'));
-
-    document.body.addEventListener('click', e => {
-      const btn = e.target.closest('.option');
-      if (!btn) return;
-      answers[btn.dataset.q] = btn.dataset.value;
-      if (btn.dataset.q === 'audience') go('q2');
-      else if (btn.dataset.q === 'goal') go('q3');
-      else {
-        const channel = channels[computeResult()];
-        document.getElementById('resultTitle').textContent = channel.name;
-        document.getElementById('resultLogo').textContent = channel.logo;
-        document.getElementById('resultWhy').textContent = channel.why;
-        document.getElementById('resultContent').textContent = channel.content;
-        document.getElementById('resultStep').textContent = channel.step;
-        go('result');
-      }
-    });
-
-    document.getElementById('restartBtn').addEventListener('click', () => {
-      answers.audience = answers.goal = answers.content = null;
-      go('start');
+    Reveal.initialize({
+      width: 1920,
+      height: 1080,
+      margin: 0.04,
+      minScale: 1,
+      maxScale: 1,
+      controls: true,
+      progress: true,
+      center: false,
+      hash: true,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      autoAnimate: true,
+      autoAnimateDuration: 0.75,
+      autoAnimateEasing: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
+      keyboard: true
     });
   </script>
 </body>
